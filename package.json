@@ -1,7 +1,7 @@
 {
-  "name": "bil-atm-machine-project",
-  "version": "1.0.1",
-  "description": "Simple_Atm_Machine_Project",
+  "name": "@bilawalhussain/atm_machine-project",
+  "version": "1.0.0",
+  "description": "Atm_Machine_Project",
   "main": "index.js",
   "type": "module",
   "publishConfig": {
