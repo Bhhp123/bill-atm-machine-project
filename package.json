@@ -1,6 +1,6 @@
 {
-  "name": "bill-atm-machine-project",
-  "version": "1.0.0",
+  "name": "bil-atm-machine-project",
+  "version": "1.0.1",
   "description": "Simple_Atm_Machine_Project",
   "main": "index.js",
   "type": "module",
