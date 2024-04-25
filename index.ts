@@ -4,6 +4,9 @@ import inquirer from 'inquirer';
 let accountBalance = 1000;
 
 async function startATM() {
+  console.log('\n\t\x1b[44m--------------------------------------\x1b[0m');
+  console.log('\t\x1b[90m\x1b[1m Bilawal Hussain\'s ATM MACHINE PROJECT \x1b[0m');
+  console.log('\t\x1b[44m--------------------------------------\x1b[0m');
   const pin = await inquirer.prompt({
     type: 'input',
     name: 'pin',

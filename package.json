@@ -1,6 +1,6 @@
 {
   "name": "@bilawalhussain/atm_machine-project",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Atm_Machine_Project",
   "main": "index.js",
   "type": "module",
