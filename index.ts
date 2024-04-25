@@ -2,32 +2,66 @@
 import inquirer from 'inquirer';
 
 let accountBalance = 1000;
-const fastCashAmount = 500; // Set the fast cash amount
 
-async function checkBalance() {
-  console.log(`\x1b[32mYour current balance is: $${accountBalance}\x1b[0m`); // Green color
+async function startATM() {
+  const pin = await inquirer.prompt({
+    type: 'input',
+    name: 'pin',
+    message: '\x1b[34mEnter your PIN:\x1b[0m',
+  });
+
+  if (pin.pin === '1234') {
+    while (true) {
+      const choice = await inquirer.prompt({
+        type: 'list',
+        name: 'choice',
+        message: '\x1b[36mSelect an option:\x1b[0m',
+        choices: [
+         'Withdraw',
+          'Deposit',
+          'Fast Cash',
+          'Check Balance',
+          'Exit',
+        ],
+      });
+
+      switch (choice.choice) {
+        case 'Withdraw':
+          await withdraw();
+          break;
+        case 'Deposit':
+          await deposit();
+          break;
+        case 'Fast Cash':
+          await fastCash();
+          break;
+        case 'Check Balance':
+          await checkBalance();
+          break;
+        case 'Exit':
+          console.log('\x1b[36mExiting...\x1b[0m');
+          return;
+      }
+    }
+  } else {
+    console.log('\x1b[31mInvalid PIN. Exiting...\x1b[0m');
+    return;
+  }
 }
 
 async function withdraw() {
   const amount = await inquirer.prompt({
     type: 'input',
     name: 'amount',
-    message: 'Enter the amount to withdraw:',
+    message: '\x1b[36mEnter amount to withdraw:\x1b[0m',
   });
-  if (accountBalance >= parseInt(amount.amount)) {
-    accountBalance -= parseInt(amount.amount);
-    console.log(`\x1b[31mWithdrawal successful! New balance: $${accountBalance}\x1b[0m`); // Red color
-  } else {
-    console.log(`\x1b[41mInsufficient funds!\x1b[0m`); // Red background
-  }
-}
 
-async function fastCash() {
-  if (accountBalance >= fastCashAmount) {
-    accountBalance -= fastCashAmount;
-    console.log(`\x1b[34mFast cash dispensed! New balance: $${accountBalance}\x1b[0m`); // Blue color
+  const withdrawAmount = parseInt(amount.amount);
+  if (withdrawAmount <= accountBalance) {
+    accountBalance -= withdrawAmount;
+    console.log(`\x1b[32mWithdrawal successful. New balance: ${accountBalance}\x1b[0m`);
   } else {
-    console.log(`\x1b[41mInsufficient funds for fast cash!\x1b[0m`); // Red background
+    console.log('\x1b[31mInsufficient funds\x1b[0m');
   }
 }
 
@@ -35,38 +69,37 @@ async function deposit() {
   const amount = await inquirer.prompt({
     type: 'input',
     name: 'amount',
-    message: 'Enter the amount to deposit:',
+    message: '\x1b[36mEnter amount to deposit:\x1b[0m',
   });
-  accountBalance += parseInt(amount.amount);
-  console.log(`\x1b[36mDeposit successful! New balance: $${accountBalance}\x1b[0m`); // Cyan color
+
+  const depositAmount = parseInt(amount.amount);
+  accountBalance += depositAmount;
+  console.log(`\x1b[32mDeposit successful. New balance: ${accountBalance}\x1b[0m`);
 }
 
-async function main() {
-  while (true) {
-    const action = await inquirer.prompt({
-      type: 'list',
-      name: 'action',
-      message: 'Select an action:',
-      choices: ['Check Balance', 'Withdraw', 'Fast Cash', 'Deposit', 'Exit'],
-    });
-    switch (action.action) {
-      case 'Check Balance':
-        await checkBalance();
-        break;
-      case 'Withdraw':
-        await withdraw();
-        break;
-      case 'Fast Cash':
-        await fastCash();
-        break;
-      case 'Deposit':
-        await deposit();
-        break;
-      case 'Exit':
-        console.log('Goodbye!');
-        return;
-    }
+async function fastCash() {
+  const fastCashOptions = await inquirer.prompt({
+    type: 'list',
+    name: 'fastCash',
+    message: '\x1b[36mSelect a Fast Cash option:\x1b[0m',
+    choices: [
+      '500',
+      '1000',
+      '1500',
+    ],
+  });
+
+  const fastCashAmount = parseInt(fastCashOptions.fastCash);
+  if (fastCashAmount <= accountBalance) {
+    accountBalance -= fastCashAmount;
+    console.log(`\x1b[32mFast Cash successful. New balance: ${accountBalance}\x1b[0m`);
+  } else {
+    console.log('\x1b[31mInsufficient funds\x1b[0m');
   }
 }
 
-main();
+async function checkBalance() {
+  console.log(`\x1b[36mYour current balance is: ${accountBalance}\x1b[0m`);
+}
+
+startATM();
